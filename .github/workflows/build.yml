@@ -39,10 +39,19 @@ jobs:
         run: docker build --pull=true --no-cache=true -t ${{ env.module_name }}:${{ env.module_version }} .
       - if: env.is_snapshot == '1'
         name: Publish to snapshot
-        run: echo "push to snapshot repo"
+        run: |
+          echo "push to snapshot repo $env.module_name $env.module_version"
+          docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }} $dockerRepo
+          docker tag ${{ env.module_name }}:${{ env.module_version }} $dockerRepo/${{ env.module_name }}:snapshot-latest
+          docker push $dockerRepo/${{ env.module_name }}:${{ env.module_version }}
+          docker push $dockerRepo/${{ env.module_name }}:snapshot-latest
+        env:
+          dockerRepo: https://docker.libsdev.k-int.com
       - if: env.is_snapshot == '0'
         name: Publish to release
         run: echo "push to release repo"
+        env:
+          dockerRepo: https://docker.libsdev.k-int.com
    
           
 
