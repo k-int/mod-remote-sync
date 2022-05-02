@@ -4,4 +4,5 @@ on:
   push:
 
 jobs:
-  uses: k-int/github-actions/.github/workflows/build-grails-4-gradle.yml@main
+  call-grails4-build:
+    uses: k-int/github-actions/.github/workflows/build-grails-4-gradle.yml@main
