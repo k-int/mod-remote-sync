@@ -3,7 +3,10 @@ name: Build mod-remote-sync
 on:
   push:
 
+defaults:
+  run:
+    working-directory: service
+
 jobs:
   call-grails4-build:
     uses: k-int/github-actions/.github/workflows/build-grails-4-gradle.yml@main
-    working-directory: service
