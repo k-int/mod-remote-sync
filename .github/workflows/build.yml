@@ -35,7 +35,7 @@ jobs:
           echo "module_name=$(grep info.app.name ./service/build/resources/main/META-INF/grails.build.info | cut -f2 -d=)" >> $GITHUB_ENV
           echo "module_version=$(grep info.app.version ./service/build/resources/main/META-INF/grails.build.info | cut -f2 -d=)" >> $GITHUB_ENV
           echo "is_snapshot=$(grep info.app.version ./service/build/resources/main/META-INF/grails.build.info | grep -i SNAPSHOT | wc -l)" >> $GITHUB_ENV
-          echo "${{github.REF}} ${{module_name}} ${{module_version}} ${{is_snapshot}}"
+          echo "${{github.REF}} ${{env.module_name}} ${{env.module_version}} ${{env.is_snapshot}}"
       - name: Docker Build
         run: docker build --pull=true --no-cache=true -t ${{ env.module_name }}:${{ env.module_version }} .
       - if: env.is_snapshot == '1'
