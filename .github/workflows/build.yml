@@ -25,3 +25,24 @@ jobs:
         with:
           arguments: build
           build-root-directory: service
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: "service/build/test-results/**/*.xml"
+      - name: Prepare env for docker build
+        run: echo "module_name=$(grep info.app.name ./service/build/resources/main/META-INF/grails.build.info | cut -f2 -d=)" >> $GITHUB_ENV
+        run: echo "module_version=$(grep info.app.version ./service/build/resources/main/META-INF/grails.build.info | cut -f2 -d=)" >> $GITHUB_ENV
+        run: echo "is_snapshot=$(grep info.app.version ./service/build/resources/main/META-INF/grails.build.info | grep -i SNAPSHOT | wc -l)" >> $GITHUB_ENV
+      - name: Docker Build and Publish
+        run: docker build --pull=true --no-cache=true -t ${{ env.module_name }}:${{ env.module_version }} .
+        if: env.is_snapshot == '1'
+        run: echo "push to snapshot repo"
+        if: env.is_snapshot == '0'
+        run: echo "push to release repo"
+   
+          
+
+# Folio Docker image publishing
+# Snapshots to 
+# Releases to https://hub.docker.com/u/folioorg
