@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "push to snapshot repo $env.module_name $env.module_version"
           docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }} $dockerRepo
-          docker tag ${{ env.module_name }}:${{ env.module_version }} $dockerRepo/${{ env.module_name }}:snapshot-latest
+          docker tag ${{ env.module_name }}:${{ env.module_version }} ${{ env.module_name }}:snapshot-latest
           docker push $dockerRepo/${{ env.module_name }}:${{ env.module_version }}
           docker push $dockerRepo/${{ env.module_name }}:snapshot-latest
         env:
@@ -52,7 +52,7 @@ jobs:
         run: |
           echo "push to snapshot repo $env.module_name $env.module_version"
           docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }} $dockerRepo
-          docker tag ${{ env.module_name }}:${{ env.module_version }} $dockerRepo/${{ env.module_name }}:latest
+          docker tag ${{ env.module_name }}:${{ env.module_version }} ${{ env.module_name }}:latest
           docker push $dockerRepo/${{ env.module_name }}:${{ env.module_version }}
           docker push $dockerRepo/${{ env.module_name }}:latest
         env:
