@@ -1,0 +1,7 @@
+name: Build mod-remote-sync
+
+on:
+  push:
+
+jobs:
+  uses: k-int/github-actions/.github/workflows/build-grails-4-gradle.yml@main
