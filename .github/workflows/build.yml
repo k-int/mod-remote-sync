@@ -3,10 +3,23 @@ name: Build mod-remote-sync
 on:
   push:
 
-defaults:
-  run:
-    working-directory: service
 
 jobs:
-  call-grails4-build:
-    uses: k-int/github-actions/.github/workflows/build-grails-4-gradle.yml@main
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Validate Gradle wrapper
+        working-directory: service
+        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      - name: Build with Gradle
+        working-directory: service
+        uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+        with:
+          arguments: build
